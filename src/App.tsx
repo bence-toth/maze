@@ -1,13 +1,17 @@
+import Maze from "./Maze";
+// import Controller from "./Controller";
 // import useGamepad from "./useGamepad";
 
 import "./App.css";
-// import Controller from "./Controller";
 
 const App = () => {
   // const gamepadKeys = useGamepad();
 
   return (
-    <div className="app">{/* <Controller gamepadKeys={gamepadKeys} /> */}</div>
+    <div className="app">
+      <Maze />
+      {/* <Controller gamepadKeys={gamepadKeys} /> */}
+    </div>
   );
 };
 
