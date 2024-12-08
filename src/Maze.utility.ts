@@ -1,5 +1,5 @@
 // Interface representing each cell in the maze
-interface Cell {
+export interface Cell {
   x: number; // X-coordinate of the cell
   y: number; // Y-coordinate of the cell
   hasWallTop: boolean; // Indicates if the cell has a top wall

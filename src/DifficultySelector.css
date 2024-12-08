@@ -1,0 +1,53 @@
+#difficulty-setting {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1;
+}
+
+#difficulty-setting h1 {
+  color: white;
+  text-align: center;
+  font-size: 92px;
+  text-transform: uppercase;
+  margin-bottom: 48px;
+  display: none;
+}
+
+#difficulty-setting ul {
+  display: flex;
+  margin: 20px;
+  gap: 20px;
+  list-style-type: none;
+}
+
+#difficulty-setting a {
+  display: flex;
+  padding: 10px;
+  background-color: hsl(0deg 0% 75%);
+  color: black;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 20px;
+}
+
+#difficulty-setting a:hover {
+  background-color: hsl(0deg 0% 90%);
+}
+
+#difficulty-setting.game-won {
+  inset: auto;
+}
+
+#difficulty-setting.game-won ul {
+  gap: 48px;
+}
+
+#difficulty-setting.game-won a {
+  padding: 12px 24px;
+  font-size: 48px;
+}
+
+#difficulty-setting.game-won h1 {
+  display: block;
+}

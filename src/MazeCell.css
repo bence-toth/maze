@@ -1,0 +1,35 @@
+.maze-cell {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: var(--cell-size);
+  height: var(--cell-size);
+  position: relative;
+}
+
+.maze-cell.wall-right::before {
+  content: "";
+  height: 100%;
+  right: 0;
+  top: 0;
+  width: 1px;
+  position: absolute;
+  background-color: var(--wall-color);
+  outline: 0.5px solid var(--wall-color);
+}
+
+.maze-cell.wall-bottom::after {
+  content: "";
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  position: absolute;
+  background-color: var(--wall-color);
+  outline: 0.5px solid var(--wall-color);
+}
+
+.maze-cell.has-food {
+  background-size: cover;
+}

@@ -1,0 +1,20 @@
+.maze-cell .hero {
+  width: 100%;
+  transform: scale(0.75);
+}
+
+.maze-cell .hero.direction-left {
+  transform: scale(0.75) rotate(90deg);
+}
+
+.maze-cell .hero.direction-top {
+  transform: scale(0.75) rotate(180deg);
+}
+
+.maze-cell .hero.direction-right {
+  transform: scale(0.75) rotate(-90deg);
+}
+
+.maze-cell .hero.game-won {
+  transform: translateY(100%) scale(0.75);
+}
