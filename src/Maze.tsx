@@ -9,6 +9,10 @@ import "./Maze.css";
 
 type WallKey = "hasWallTop" | "hasWallRight" | "hasWallBottom" | "hasWallLeft";
 
+// TODO: Win game when all food is found and hero is out
+// TODO: Improve visuals and make it responsive
+// TODO: Add controller support
+
 interface DirectionConfig {
   direction: "top" | "right" | "bottom" | "left";
   dx: number;
@@ -65,6 +69,12 @@ const Maze = () => {
     });
 
     return setFoodCells(foundFoodCells);
+  }, [maze]);
+
+  useEffect(() => {
+    if (maze[0][0].hasWallBottom) {
+      setHero((previousHero) => ({ ...previousHero, direction: "right" }));
+    }
   }, [maze]);
 
   const [hero, setHero] = useState({

@@ -40,16 +40,17 @@
 
 .maze-cell .hero {
   width: 100%;
+  transform: scale(0.75);
 }
 
 .maze-cell .hero.direction-left {
-  transform: rotate(90deg);
+  transform: scale(0.75) rotate(90deg);
 }
 
 .maze-cell .hero.direction-top {
-  transform: rotate(180deg);
+  transform: scale(0.75) rotate(180deg);
 }
 
 .maze-cell .hero.direction-right {
-  transform: rotate(-90deg);
+  transform: scale(0.75) rotate(-90deg);
 }
