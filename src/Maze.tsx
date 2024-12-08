@@ -9,8 +9,12 @@ import "./Maze.css";
 
 type WallKey = "hasWallTop" | "hasWallRight" | "hasWallBottom" | "hasWallLeft";
 
-// TODO: Win game when all food is found and hero is out
 // TODO: Add controller support
+
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+
+const difficulty = urlParams.get("difficulty") ?? "easy";
 
 interface DirectionConfig {
   direction: "top" | "right" | "bottom" | "left";
@@ -52,8 +56,26 @@ interface FoodCell {
   isFound: boolean;
 }
 
+interface Difficulty {
+  width: number;
+  height: number;
+}
+
+const difficulties: Record<string, Difficulty> = {
+  easy: { width: 10, height: 10 },
+  medium: { width: 15, height: 15 },
+  hard: { width: 30, height: 15 },
+};
+
 const Maze = () => {
-  const maze = useMemo(() => generateMaze(30, 15), []);
+  const maze = useMemo(
+    () =>
+      generateMaze(
+        difficulties[difficulty].width,
+        difficulties[difficulty].height
+      ),
+    []
+  );
 
   const [foodCells, setFoodCells] = useState<FoodCell[]>([]);
 
@@ -82,18 +104,27 @@ const Maze = () => {
     direction: "bottom",
   });
 
+  const [isGameWon, setIsGameWon] = useState(false);
+
   useEffect(() => {
     const keyDownHandler = (event: KeyboardEvent) => {
-      console.log(maze[hero.y][hero.x]);
+      if (isGameWon) {
+        return;
+      }
+
       const move = directions[event.key as keyof typeof directions];
 
       // If the key pressed isn't one of the arrow keys we're interested in, do nothing
-      if (!move) return;
+      if (!move) {
+        return;
+      }
 
       const { direction, dx, dy, wall } = move;
 
       // Check if there is a wall in the direction we're trying to move
-      if (maze[hero.y][hero.x][wall]) return;
+      if (maze[hero.y][hero.x][wall]) {
+        return;
+      }
 
       // Update hero position and direction
       setHero((prev) => ({
@@ -102,13 +133,24 @@ const Maze = () => {
         y: Math.min(Math.max(0, prev.y + dy), maze.length - 1),
         direction,
       }));
+
+      // Check if the game is won
+      if (
+        foodCells.every((foodCell) => foodCell.isFound) &&
+        hero.x === maze[0].length - 1 &&
+        hero.y === maze.length - 1 &&
+        event.key === "ArrowDown"
+      ) {
+        setIsGameWon(true);
+      }
     };
 
     document.addEventListener("keydown", keyDownHandler);
+
     return () => {
       document.removeEventListener("keydown", keyDownHandler);
     };
-  }, [hero.x, hero.y, maze]);
+  }, [foodCells, hero.x, hero.y, isGameWon, maze]);
 
   useEffect(() => {
     setFoodCells((previousFoundFoodCells) =>
@@ -122,43 +164,66 @@ const Maze = () => {
   }, [hero]);
 
   return (
-    <div className="maze">
-      {maze.map((row, y) => (
-        <div key={y} className="maze-row">
-          {row.map((cell, x) => (
-            <div
-              key={x}
-              className={classNames("maze-cell", {
-                "wall-top": cell.hasWallTop,
-                "wall-right": cell.hasWallRight,
-                "wall-bottom": cell.hasWallBottom,
-                "wall-left": cell.hasWallLeft,
-                "has-food": foodCells.some(
-                  (foodCell) =>
-                    foodCell.x === x && foodCell.y === y && !foodCell.isFound
-                ),
-              })}
-              style={{
-                backgroundImage: foodCells.some(
-                  (foodCell) =>
-                    foodCell.x === x && foodCell.y === y && !foodCell.isFound
-                )
-                  ? `url(${FoodImage})`
-                  : "none",
-              }}
-            >
-              {hero.x === x && hero.y === y && (
-                <img
-                  className={classNames("hero", `direction-${hero.direction}`)}
-                  src={HeroImage}
-                  alt="Hero"
-                />
-              )}
-            </div>
-          ))}
-        </div>
-      ))}
-    </div>
+    <>
+      <nav
+        id="difficulty-setting"
+        className={classNames({ "game-won": isGameWon })}
+      >
+        <h1>You won!</h1>
+        <ul>
+          <li>
+            <a href="?difficulty=easy">Easy</a>
+          </li>
+          <li>
+            <a href="?difficulty=medium">Medium</a>
+          </li>
+          <li>
+            <a href="?difficulty=hard">Hard</a>
+          </li>
+        </ul>
+      </nav>
+      <div className={classNames("maze", { "game-won": isGameWon })}>
+        {maze.map((row, y) => (
+          <div key={y} className="maze-row">
+            {row.map((cell, x) => (
+              <div
+                key={x}
+                className={classNames("maze-cell", {
+                  "wall-top": cell.hasWallTop,
+                  "wall-right": cell.hasWallRight,
+                  "wall-bottom": cell.hasWallBottom,
+                  "wall-left": cell.hasWallLeft,
+                  "has-food": foodCells.some(
+                    (foodCell) =>
+                      foodCell.x === x && foodCell.y === y && !foodCell.isFound
+                  ),
+                })}
+                style={{
+                  backgroundImage: foodCells.some(
+                    (foodCell) =>
+                      foodCell.x === x && foodCell.y === y && !foodCell.isFound
+                  )
+                    ? `url(${FoodImage})`
+                    : "none",
+                }}
+              >
+                {hero.x === x && hero.y === y && (
+                  <img
+                    className={classNames(
+                      "hero",
+                      `direction-${hero.direction}`,
+                      { "game-won": isGameWon }
+                    )}
+                    src={HeroImage}
+                    alt="Hero"
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
 
