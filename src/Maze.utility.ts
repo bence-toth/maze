@@ -6,11 +6,12 @@ interface Cell {
   hasWallRight: boolean; // Indicates if the cell has a right wall
   hasWallBottom: boolean; // Indicates if the cell has a bottom wall
   hasWallLeft: boolean; // Indicates if the cell has a left wall
+  hasFood: boolean; // Indicates if the cell contains food
 }
 
 // Function to initialize the maze grid with all walls intact
-const initializeMaze = (width: number, height: number): Cell[][] => {
-  return Array.from({ length: height }, (_, y) =>
+const initializeMaze = (width: number, height: number): Cell[][] =>
+  Array.from({ length: height }, (_, y) =>
     Array.from({ length: width }, (_, x) => ({
       x,
       y,
@@ -18,9 +19,9 @@ const initializeMaze = (width: number, height: number): Cell[][] => {
       hasWallRight: true,
       hasWallBottom: true,
       hasWallLeft: true,
+      hasFood: false,
     }))
   );
-};
 
 // Function to get the unvisited neighboring cells of the current cell
 const getUnvisitedNeighbors = (
@@ -87,7 +88,7 @@ const setStartAndFinish = (
   // Remove wall for the starting cell
   if (start.y === 0) {
     // Start cell is on the top edge
-    maze[start.y][start.x].hasWallTop = false;
+    maze[start.y][start.x].hasWallTop = true;
   } else if (start.y === height - 1) {
     // Start cell is on the bottom edge
     maze[start.y][start.x].hasWallBottom = false;
@@ -116,6 +117,38 @@ const setStartAndFinish = (
     maze[end.y][end.x].hasWallRight = false;
   } else {
     throw new Error("End cell must be on the border of the maze");
+  }
+
+  return maze;
+};
+
+// Function to place food on 5 random cells excluding the start and end cells
+const placeFood = (
+  maze: Cell[][],
+  start: { x: number; y: number },
+  end: { x: number; y: number },
+  foodCount: number = 5
+) => {
+  const width = maze[0].length;
+  const height = maze.length;
+
+  // We'll use a Set to keep track of cells we can't place food on
+  const excludedCells = new Set<string>();
+  excludedCells.add(`${start.x},${start.y}`);
+  excludedCells.add(`${end.x},${end.y}`);
+
+  let placed = 0;
+  while (placed < foodCount) {
+    const randomX = Math.floor(Math.random() * width);
+    const randomY = Math.floor(Math.random() * height);
+    const key = `${randomX},${randomY}`;
+
+    // Check if this cell is neither start nor end and not already chosen
+    if (!excludedCells.has(key)) {
+      excludedCells.add(key);
+      maze[randomY][randomX].hasFood = true;
+      placed++;
+    }
   }
 
   return maze;
@@ -170,7 +203,7 @@ const generateMaze = (
   }
 
   // Set the start and finish points
-  return setStartAndFinish(maze, start, end);
+  return placeFood(setStartAndFinish(maze, start, end), start, end, 10);
 };
 
 export { generateMaze };
