@@ -1,5 +1,5 @@
 {
-  "name": "controller-game",
+  "name": "maze",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -62,5 +62,5 @@
     "stylelint-prettier": "^2.0.0",
     "typescript": "^4.9.5"
   },
-  "homepage": "https://bence-toth.github.io/daniel-maze"
+  "homepage": "https://bence-toth.github.io/maze"
 }
