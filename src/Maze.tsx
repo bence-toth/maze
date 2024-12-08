@@ -10,7 +10,6 @@ import "./Maze.css";
 type WallKey = "hasWallTop" | "hasWallRight" | "hasWallBottom" | "hasWallLeft";
 
 // TODO: Win game when all food is found and hero is out
-// TODO: Improve visuals and make it responsive
 // TODO: Add controller support
 
 interface DirectionConfig {
@@ -54,7 +53,7 @@ interface FoodCell {
 }
 
 const Maze = () => {
-  const maze = useMemo(() => generateMaze(20, 15), []);
+  const maze = useMemo(() => generateMaze(30, 15), []);
 
   const [foodCells, setFoodCells] = useState<FoodCell[]>([]);
 

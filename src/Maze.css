@@ -1,6 +1,32 @@
 .maze {
   display: flex;
   flex-direction: column;
+  position: relative;
+
+  --wall-color: hsl(0deg 0% 75%);
+  --cell-size: min(3vw, 5.25vh);
+}
+
+.maze::before {
+  content: "";
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 1px;
+  position: absolute;
+  background-color: var(--wall-color);
+  outline: 0.5px solid var(--wall-color);
+}
+
+.maze::after {
+  content: "";
+  height: 100%;
+  top: 0;
+  left: 0;
+  width: 1px;
+  position: absolute;
+  background-color: var(--wall-color);
+  outline: 0.5px solid var(--wall-color);
 }
 
 .maze-row {
@@ -13,25 +39,31 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
-  border: 1px solid black;
+  width: var(--cell-size);
+  height: var(--cell-size);
+  position: relative;
 }
 
-.maze-cell.wall-top {
-  border-top: 1px solid white;
+.maze-cell.wall-right::before {
+  content: "";
+  height: 100%;
+  right: 0;
+  top: 0;
+  width: 1px;
+  position: absolute;
+  background-color: var(--wall-color);
+  outline: 0.5px solid var(--wall-color);
 }
 
-.maze-cell.wall-right {
-  border-right: 1px solid white;
-}
-
-.maze-cell.wall-bottom {
-  border-bottom: 1px solid white;
-}
-
-.maze-cell.wall-left {
-  border-left: 1px solid white;
+.maze-cell.wall-bottom::after {
+  content: "";
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  position: absolute;
+  background-color: var(--wall-color);
+  outline: 0.5px solid var(--wall-color);
 }
 
 .maze-cell.has-food {
