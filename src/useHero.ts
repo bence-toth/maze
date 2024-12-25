@@ -67,7 +67,6 @@ const useHero = ({
   }, [maze]);
 
   useEffect(() => {
-    // TODO: Add controller support
     const keyDownHandler = (event: KeyboardEvent) => {
       if (isGameWon) {
         return;
@@ -120,7 +119,7 @@ const useHero = ({
           return { ...Food, isFound: true };
         }
         return Food;
-      })
+      }),
     );
   }, [hero, setFood]);
 

@@ -20,14 +20,14 @@ const initializeMaze = (width: number, height: number): Cell[][] =>
       hasWallBottom: true,
       hasWallLeft: true,
       hasFood: false,
-    }))
+    })),
   );
 
 // Function to get the unvisited neighboring cells of the current cell
 const getUnvisitedNeighbors = (
   cell: { x: number; y: number },
   maze: Cell[][],
-  visited: boolean[][]
+  visited: boolean[][],
 ): { x: number; y: number }[] => {
   const { x, y } = cell;
   const neighbors: { x: number; y: number }[] = [];
@@ -50,7 +50,7 @@ const getUnvisitedNeighbors = (
 const removeWalls = (
   current: { x: number; y: number },
   next: { x: number; y: number },
-  maze: Cell[][]
+  maze: Cell[][],
 ) => {
   const xDiff = current.x - next.x;
   const yDiff = current.y - next.y;
@@ -80,7 +80,7 @@ const removeWalls = (
 const setStartAndFinish = (
   maze: Cell[][],
   start: { x: number; y: number },
-  end: { x: number; y: number }
+  end: { x: number; y: number },
 ) => {
   const width = maze[0].length;
   const height = maze.length;
@@ -127,7 +127,7 @@ const placeFood = (
   maze: Cell[][],
   start: { x: number; y: number },
   end: { x: number; y: number },
-  foodCount: number = 5
+  foodCount: number = 5,
 ) => {
   const width = maze[0].length;
   const height = maze.length;
@@ -139,7 +139,9 @@ const placeFood = (
 
   let placed = 0;
   while (placed < foodCount) {
+    // eslint-disable-next-line sonarjs/pseudo-random
     const randomX = Math.floor(Math.random() * width);
+    // eslint-disable-next-line sonarjs/pseudo-random
     const randomY = Math.floor(Math.random() * height);
     const key = `${randomX},${randomY}`;
 
@@ -159,7 +161,7 @@ const generateMaze = (
   width: number,
   height: number,
   start: { x: number; y: number } = { x: 0, y: 0 },
-  end: { x: number; y: number } = { x: width - 1, y: height - 1 }
+  end: { x: number; y: number } = { x: width - 1, y: height - 1 },
 ): Cell[][] => {
   // Initialize the maze grid
   const maze = initializeMaze(width, height);
@@ -169,7 +171,7 @@ const generateMaze = (
 
   // 2D array to keep track of visited cells
   const visited = Array.from({ length: height }, () =>
-    Array(width).fill(false)
+    Array(width).fill(false),
   );
 
   // Start from the starting cell
@@ -182,6 +184,7 @@ const generateMaze = (
 
     if (neighbors.length > 0) {
       // Randomly choose one of the unvisited neighbors
+      // eslint-disable-next-line sonarjs/pseudo-random
       const nextCell = neighbors[Math.floor(Math.random() * neighbors.length)];
 
       // Push the current cell to the stack
