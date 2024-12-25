@@ -23,12 +23,12 @@ const MazeCell = ({ cell, food, children, x, y }: CellProps) => (
       "wall-bottom": cell.hasWallBottom,
       "wall-left": cell.hasWallLeft,
       "has-food": food.some(
-        (foodItem) => foodItem.x === x && foodItem.y === y && !foodItem.isFound
+        (foodItem) => foodItem.x === x && foodItem.y === y && !foodItem.isFound,
       ),
     })}
     style={{
       backgroundImage: food.some(
-        (foodItem) => foodItem.x === x && foodItem.y === y && !foodItem.isFound
+        (foodItem) => foodItem.x === x && foodItem.y === y && !foodItem.isFound,
       )
         ? `url(${FoodImage})`
         : "none",

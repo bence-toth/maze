@@ -24,9 +24,9 @@ const useMaze = ({ difficulty }: UseMazeParams) =>
     () =>
       generateMaze(
         difficulties[difficulty].width,
-        difficulties[difficulty].height
+        difficulties[difficulty].height,
       ),
-    [difficulty]
+    [difficulty],
   );
 
 export default useMaze;

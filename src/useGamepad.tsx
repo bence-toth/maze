@@ -46,7 +46,7 @@ const useGamepad = () => {
       console.log("Gamepad connected", gamepadConnectedEvent.gamepad);
       setGamepadIndex(gamepadConnectedEvent.gamepad.index);
     },
-    []
+    [],
   );
 
   const controllerLoop = useCallback(() => {
